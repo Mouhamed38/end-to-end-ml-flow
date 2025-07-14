@@ -10,11 +10,19 @@ class DataTransformationTrainingPipeline():
         pass
 
     def main(self):
-        manag_config=ConfigurationManager()
-        configM=manag_config.get_data_transformation_config()
-        data_val=DataTransformation(configM)
-        data_val.train_test_split()
-    
+        try:
+            with open('artifacts/data_validation/status.txt', 'r') as f :
+                status= f.read().split(' ')[-1]
+                print(status)
+            if status=='True':
+
+                manag_config=ConfigurationManager()
+                configM=manag_config.get_data_transformation_config()
+                data_val=DataTransformation(configM)
+                data_val.train_test_split()
+            else: raise Exception("Data Validation Failed")
+        except Exception as e:
+            raise e   
 
 if __name__== '__main__':
     try:
